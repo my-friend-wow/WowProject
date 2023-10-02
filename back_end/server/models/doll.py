@@ -1,5 +1,3 @@
-from sqlalchemy import Boolean, Integer
-
 from api.common import db
 
 

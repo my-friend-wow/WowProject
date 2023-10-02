@@ -1,6 +1,4 @@
 server/.env
 server/__pycache__/*
-server/api/__pycache__/*
-server/common/__pycache__/*
-server/models/__pycache__/*
-server/plugin/__pycache__/*
+server/*/__pycache__/*
+.ruff_cache/*

@@ -1,5 +1,3 @@
-from sqlalchemy import Boolean, Integer
-
 from api.common import db
 from plugin.seoul_time import get_current_seoul_time
 

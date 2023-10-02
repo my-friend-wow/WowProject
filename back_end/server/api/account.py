@@ -1,12 +1,9 @@
-from flask import request, jsonify, Response
+from flask import request, jsonify
+from sqlalchemy.exc import SQLAlchemyError
 from dotenv import load_dotenv
-import jwt
-import os
-import re
 
 from api.common import app, db
-from plugin.account_check import is_id_valid_input, is_pw_valid_input, \
-    generate_token, verify_token
+from plugin.account_check import is_id_valid_input, is_pw_valid_input, generate_token
 from models.user import User
 from models.doll import Doll
 
@@ -36,7 +33,9 @@ def sign_up():
         return jsonify(message='아이디는 알파벳 소문자와 숫자, 특수문자 _만 허용되며 5자 이상이어야만 합니다.'), 422
 
     if len(user_pw) == 0 or not is_pw_valid_input(user_pw):
-        return jsonify(message='비밀번호는 알파벳 대소문자와 숫자, 특수문자 !, @, *, _만 허용되며, 8자 이상이어야만 합니다.'), 422
+        return jsonify(
+            message='비밀번호는 알파벳 대소문자와 숫자, 특수문자 !, @, *, _만 허용되며, 8자 이상이어야만 합니다.'
+            ), 422
 
     if len(doll_name) == 0:
         return jsonify(message='인형 이름을 정하여 반드시 입력해주세요.'), 422
@@ -51,7 +50,7 @@ def sign_up():
 
     try:
         db.session.commit()
-    except:
+    except SQLAlchemyError:
         db.session.rollback()
         return jsonify(message='유저 정보 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
@@ -60,7 +59,7 @@ def sign_up():
 
     try:
         db.session.commit()
-    except:
+    except SQLAlchemyError:
         db.session.rollback()
         return jsonify(message='인형 정보 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
