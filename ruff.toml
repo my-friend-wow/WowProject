@@ -1,0 +1,2 @@
+line-length = 120
+exclude = ["back_end/server/api/__init__.py"]

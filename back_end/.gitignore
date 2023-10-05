@@ -1,1 +1,4 @@
-.env
+server/.env
+server/__pycache__/*
+server/*/__pycache__/*
+.ruff_cache/*
