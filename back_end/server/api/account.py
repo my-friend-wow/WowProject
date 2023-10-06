@@ -1,13 +1,10 @@
 from flask import request, jsonify
 from sqlalchemy.exc import SQLAlchemyError
-from dotenv import load_dotenv
 
 from api.common import app, db
 from plugin.account_check import is_id_valid_input, is_pw_valid_input, generate_token
 from models.user import User
 from models.doll import Doll
-
-load_dotenv()
 
 
 @app.route('/signup', methods=['POST'])
