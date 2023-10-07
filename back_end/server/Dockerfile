@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY . .
 
+# flask with gunicorn
 ENV PYTHONPATH=/app/server
 ENV FLASK_APP=run
 
@@ -13,6 +14,7 @@ RUN mkdir -p /var/log/gunicorn
 RUN touch /var/log/gunicorn/error.log && \
     touch /var/log/gunicorn/access.log
 
+# mssql
 RUN apt-get update && \
     apt-get install -y curl && \
     pip install --upgrade pip && \
@@ -23,6 +25,14 @@ RUN curl https://packages.microsoft.com/config/debian/11/prod.list | tee /etc/ap
 RUN apt-get update
 RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
+# cron job
+RUN apt-get install -y install cron
+
+ADD cronjob /etc/cron.d/cronjob
+RUN chmod 644 /etc/cron.d/cronjob
+RUN crontab /etc/cron.d/cronjob
+
 EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app", "--error-logfile=/var/log/gunicorn/error.log", "--access-logfile=/var/log/gunicorn/access.log", "--max-requests", "1000", "--max-requests-jitter", "50"]
+# run shell
+CMD ["./entrypoint.sh"]
