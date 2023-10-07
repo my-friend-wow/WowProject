@@ -28,10 +28,6 @@ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
 # cron job
 RUN apt-get install -y install cron
 
-ADD cronjob /etc/cron.d/cronjob
-RUN chmod 644 /etc/cron.d/cronjob
-RUN crontab /etc/cron.d/cronjob
-
 EXPOSE 5000
 
 # run shell
