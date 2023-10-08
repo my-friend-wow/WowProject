@@ -23,7 +23,6 @@ def pedometer_post():
 
     data = request.get_json()
     doll_id = data.get('doll_id')
-    token = data.get('token')
 
     doll_data = Doll.query.filter_by(doll_id=doll_id).first()
     user_id = doll_data.user_id

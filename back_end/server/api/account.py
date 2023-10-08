@@ -23,8 +23,13 @@ def sign_up():
     existing_user = User.query.filter_by(user_id=user_id).first()
     existing_doll = Doll.query.filter_by(user_id=user_id).first() 
 
+    existing_doll_id = Doll.query.filter_by(doll_id=doll_id).first()
+
     if existing_user or existing_doll:
         return jsonify(message='이미 회원가입한 적이 있는 아이디입니다. 로그인하세요.'), 400
+
+    if existing_doll_id:
+        return jsonify(message='이미 다른 사람이 사용 중인 인형입니다. 다른 인형 id로 가입하세요.'), 400
 
     if len(user_id) == 0 or not is_id_valid_input(user_id):
         return jsonify(message='아이디는 알파벳 소문자와 숫자, 특수문자 _만 허용되며 5자 이상이어야만 합니다.'), 422

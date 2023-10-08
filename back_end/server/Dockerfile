@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # flask with gunicorn
-ENV PYTHONPATH=/app/server
+ENV PYTHONPATH=/app
 ENV FLASK_APP=run
 
 RUN mkdir -p /var/log/gunicorn
@@ -26,9 +26,15 @@ RUN apt-get update
 RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
 # cron job
-RUN apt-get install -y install cron
+RUN apt-get install -y python-is-python3
+
+RUN apt-get install -y cron
+RUN cp /app/cronjob /etc/cron.d/cronjob
+RUN chmod +x /etc/cron.d/cronjob
+RUN crontab /etc/cron.d/cronjob
 
 EXPOSE 5000
 
 # run shell
+RUN chmod +x /app/entrypoint.sh
 CMD ["./entrypoint.sh"]
