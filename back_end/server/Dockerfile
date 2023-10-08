@@ -7,7 +7,6 @@ WORKDIR /app
 COPY . .
 
 # flask with gunicorn
-ENV PYTHONPATH=/app
 ENV FLASK_APP=run
 
 RUN mkdir -p /var/log/gunicorn
