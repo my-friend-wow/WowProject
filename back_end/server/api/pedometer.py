@@ -16,15 +16,14 @@ def pedometer_post():
     매일 자정 걸음 수 초기화됨
     하루에 최초 한 번만 코인 += 1
     """
-    token = request.headers.get('Authorization')
-    payload = verify_token(token)
-    if not payload:
-        return jsonify(message='올바르지 않은 접근입니다. 관리자에게 문의하세요.'), 401
-
     data = request.get_json()
     doll_id = data.get('doll_id')
 
     doll_data = Doll.query.filter_by(doll_id=doll_id).first()
+
+    if not doll_data:
+        return jsonify(message='인형 id를 찾을 수 없습니다. 관리자에게 문의하세요.'), 404
+
     user_id = doll_data.user_id
 
     user_data = User.query.filter_by(user_id=user_id).first()
@@ -60,7 +59,7 @@ def pedometer_get(user_id):
 
     step_count = user_data.step_count
 
-    return jsonify(step_count=step_count)
+    return jsonify(step_count=step_count), 200
 
 
 @app.route('/pedometer_coin_exchange', methods=['POST'])
