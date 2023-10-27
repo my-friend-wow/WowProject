@@ -5,7 +5,7 @@ from api.common import app, db
 from plugin.token_check import verify_token
 from models.user import User
 from models.doll import Doll
-from models.user_daily_activity import UserDailyAcitivity
+from models.user_daily_activity import UserDailyActivity
 
 
 @app.route('/pedometer_post', methods=['POST'])
