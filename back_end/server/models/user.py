@@ -6,8 +6,8 @@ class User(db.Model):
     __table_args__ = {'schema': 'industry'}
     __tablename__ = 'users'
 
-    user_id = db.Column(db.String(255), unique=True, nullable=False, primary_key=True)
-    user_pw = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.String(20), unique=True, nullable=False, primary_key=True)
+    user_pw = db.Column(db.String(20), nullable=False)
     token = db.Column(db.String(255), nullable=False)
     coin_count = db.Column(db.Integer, nullable=False, default=0)
     step_count = db.Column(db.Integer, nullable=False, default=0)

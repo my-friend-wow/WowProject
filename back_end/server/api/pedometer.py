@@ -5,6 +5,7 @@ from api.common import app, db
 from plugin.token_check import verify_token
 from models.user import User
 from models.doll import Doll
+from models.user_daily_activity import UserDailyAcitivity
 
 
 @app.route('/pedometer_post', methods=['POST'])
@@ -14,7 +15,6 @@ def pedometer_post():
     Raspberry Pi에서 충격 신호가 올 때마다 이 API가 호출됨
     걸음 수 += 1
     매일 자정 걸음 수 초기화됨
-    하루에 최초 한 번만 코인 += 1
     """
     data = request.get_json()
     doll_id = data.get('doll_id')
@@ -77,9 +77,15 @@ def pedometer_coin_exchange():
     user_id = data.get('user_id')
     coin_amount = data.get('coin_amount')
 
-    user_data = User.query.filter_by(user_id=user_id).first()
+    user_activity_data = UserDailyAcitivity.query.filter_by(user_id=user_id).first()
+    
+    if user_activity_data.today_walked:
+        return jsonify(message='이미 오늘 코인을 교환하셨습니다.'), 422
 
+    user_data = User.query.filter_by(user_id=user_id).first()
     user_data.coin_count += coin_amount
+
+    user_activity_data.today_walked = 1
 
     try:
         db.session.commit()
