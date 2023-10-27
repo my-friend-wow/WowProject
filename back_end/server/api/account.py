@@ -59,15 +59,24 @@ def sign_up():
 
     try:
         new_user = User(user_id=user_id, user_pw=user_pw, token=token)
+        
+        db.session.add(new_user)
+        db.session.commit()
+    
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify(message='유저 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
+
+    try:
         new_user_daily_activities = UserDailyActivity(user_id=user_id)
         new_doll = Doll(user_id=user_id, doll_name=doll_name, doll_id=doll_id)
 
-        db.session.add_all([new_user, new_user_daily_activities, new_doll])
+        db.session.add_all([new_user_daily_activities, new_doll])
         db.session.commit()
 
     except SQLAlchemyError:
         db.session.rollback()
-        return jsonify(message='회원정보 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
+        return jsonify(message='유저 관련 정보들을 저장하던 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
     return jsonify(message='회원가입이 완료되었습니다.'), 201
 
