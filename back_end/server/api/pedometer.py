@@ -77,7 +77,7 @@ def pedometer_coin_exchange():
     user_id = data.get('user_id')
     coin_amount = data.get('coin_amount')
 
-    user_activity_data = UserDailyAcitivity.query.filter_by(user_id=user_id).first()
+    user_activity_data = UserDailyActivity.query.filter_by(user_id=user_id).first()
     
     if user_activity_data.today_walked:
         return jsonify(message='이미 오늘 코인을 교환하셨습니다.'), 422
