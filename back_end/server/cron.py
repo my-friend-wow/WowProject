@@ -2,6 +2,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from api.common import db, app
 from models.user import User
 from models.user_daily_activity import UserDailyActivity
+from models.friend import Friend
 
 
 def reset_step_count_per_day():
@@ -41,6 +42,21 @@ def reset_activity_per_day():
             raise e
 
 
+def reset_friend_list_per_day():
+    """
+    매일 00시 cronjob 실행되는 함수
+    모든 유저의 오늘 접촉한 친구 목록을 초기화
+    """
+    with app.app_context():            
+        try:
+            Friend.query.delete()
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise e
+
+
 if __name__ == '__main__':
     reset_step_count_per_day()
     reset_activity_per_day()
+    reset_friend_list_per_day()
