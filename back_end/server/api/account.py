@@ -5,6 +5,7 @@ from api.common import app, db
 from plugin.account_check import is_id_valid_input, is_pw_valid_input, generate_token
 from models.user import User
 from models.doll import Doll
+from models.user_daily_activity import UserDailyActivity
 
 
 @app.route('/signup', methods=['POST'])
@@ -38,32 +39,44 @@ def sign_up():
         return jsonify(
             message='비밀번호는 알파벳 대소문자와 숫자, 특수문자 !, @, *, _만 허용되며, 8자 이상이어야만 합니다.'
             ), 422
+    
+    if len(user_id) > 20:
+        return jsonify(message='아이디는 20자 이내로 해주세요.'), 422
+    
+    if len(user_pw) > 20:
+        return jsonify(message='비밀번호는 20자 이내로 해주세요.'), 422
 
     if len(doll_name) == 0:
         return jsonify(message='인형 이름을 정하여 반드시 입력해주세요.'), 422
+
+    if len(doll_name) > 6:
+        return jsonify(message='인형 이름은 6자 이내로 해주세요.'), 422
 
     if len(doll_id) == 0:
         return jsonify(message='인형에 적힌 고유 id를 반드시 입력해야합니다.'), 422
 
     token = generate_token(user_id)
 
-    new_user = User(user_id=user_id, user_pw=user_pw, token=token)
-    db.session.add(new_user)
-
     try:
+        new_user = User(user_id=user_id, user_pw=user_pw, token=token)
+        
+        db.session.add(new_user)
         db.session.commit()
+    
     except SQLAlchemyError:
         db.session.rollback()
-        return jsonify(message='유저 정보 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
-
-    new_doll = Doll(user_id=user_id, doll_name=doll_name, doll_id=doll_id)
-    db.session.add(new_doll)
+        return jsonify(message='유저 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
     try:
+        new_user_daily_activities = UserDailyActivity(user_id=user_id)
+        new_doll = Doll(user_id=user_id, doll_name=doll_name, doll_id=doll_id)
+
+        db.session.add_all([new_user_daily_activities, new_doll])
         db.session.commit()
+
     except SQLAlchemyError:
         db.session.rollback()
-        return jsonify(message='인형 정보 저장 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
+        return jsonify(message='유저 관련 정보들을 저장하던 도중 에러가 발생했습니다. 다시 시도해주세요.'), 500
 
     return jsonify(message='회원가입이 완료되었습니다.'), 201
 
