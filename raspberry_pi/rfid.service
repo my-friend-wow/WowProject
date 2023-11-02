@@ -1,5 +1,5 @@
 [Unit]
-Description=Raspberry Pi Service
+Description=Raspberry Pi RFID Service
 After=network.target
 
 [Service]
@@ -8,7 +8,7 @@ Group=industry
 WorkingDirectory=/home/industry/WowProject/raspberry_pi/
 Environment="PYTHONPATH=/home/industry/myenv/bin/python3"
 Environment="PATH=/home/industry/myenv/bin"
-ExecStart=/home/industry/main.py
+ExecStart=/home/industry/myenv/bin/python /home/industry/WowProject/raspberry_pi/rfid.py
 
 [Install]
 WantedBy=multi-user.target

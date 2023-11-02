@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-from mfrc522 import SimpleMFRC522
 import RPi.GPIO as GPIO
 import requests
 import logging
@@ -9,13 +8,6 @@ import os
 
 
 load_dotenv()
-
-
-def check_log_directory_existence():
-    log_directory = '/var/log/industry'
-
-    if not os.path.exists(log_directory):
-        os.makedirs(log_directory)
 
 
 def send_pedometer_post_request():
@@ -29,7 +21,7 @@ def send_pedometer_post_request():
     headers = {'Content-Type': 'application/json'}
     data = {'doll_id': doll_id}
 
-    log_file = '/var/log/industry/pedometer.log'
+    log_file = 'pedometer.log'
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     try:
@@ -67,45 +59,10 @@ def sw18010p():
                 send_pedometer_post_request()
 
             time.sleep(1)
-
-    except KeyboardInterrupt:
-        GPIO.cleanup()
-
-
-def send_rfid_post_request(id, text):
-    """
-    RFID RC522 모듈 사용,
-    NFC 감지될 때마다 실행되며 백엔드 서버로 친구 ID POST 요청.
-    """
-    url = os.getenv('URL') + '/friend_post'
-    doll_id = os.getenv('DOLL_ID')
-    friend_doll_id = id
-
-    headers = {'Content-Type': 'application/json'}
-    data = {'doll_id': doll_id, 'friend_doll_id': friend_doll_id}
-
-    log_file = '/var/log/industry/friend.log'
-    logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-    ##
-    # @SimpleCorini 여기 구현하기 !!
-    ##
-
-
-def rfid_rc522():
-    reader = SimpleMFRC522()
-
-    try:
-        while True:
-            id, text = reader.read()
-            send_rfid_post_request(id, text)
-
-            time.sleep(10)
+    
     finally:
         GPIO.cleanup()
 
 
 if __name__ == '__main__':
-    check_log_directory_existence()
     sw18010p()
-    rfid_rc522()
