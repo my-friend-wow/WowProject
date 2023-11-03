@@ -17,7 +17,7 @@ pip3 install -r requirements.txt
 - System Service Setting
 
 ```bash
-sudo cp pedometer.service /etc/systemd/system/pedomter.service
+sudo cp pedometer.service /etc/systemd/system/pedometer.service
 sudo cp rfid.service /etc/systemd/system/rfid.service
 sudo systemctl daemon-reload
 sudo systemctl enable pedometer rfid
