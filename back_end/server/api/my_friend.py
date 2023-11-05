@@ -3,6 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from api.common import app, db
 from plugin.token_check import verify_token
+from models.user import User
 from models.friend import Friend
 from models.doll import Doll
 
@@ -62,6 +63,10 @@ def my_friend_get(user_id):
     payload = verify_token(token)
     if not payload:
         return jsonify(message='올바르지 않은 API 접근입니다. 관리자에게 문의하세요.'), 401
+
+    user_ids = [user.user_id for user in User.query.all()]
+    if user_id not in user_ids:
+        return jsonify(message='해당 유저가 존재하지 않습니다.'), 404
 
     friend_data = Friend.query.filter_by(user_id=user_id).all()
 
