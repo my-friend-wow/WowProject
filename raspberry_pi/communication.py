@@ -12,12 +12,19 @@ load_dotenv()
 
 
 class WowAudioAssistant:
-    def __init__(self, openai_api_key, azure_speech_key, azure_service_region):
+    def __init__(self, start_sound_file, openai_api_key, azure_speech_key, azure_service_region):
+        self.start_sound_file = start_sound_file
         self.azure_stt_result = ""
         self.openai_api_key = openai_api_key
         self.azure_speech_key = azure_speech_key
         self.azure_service_region = azure_service_region
         self.answer_text = ""
+
+    def start_sound_effect(self):
+        """
+        듣기 시작 효과음을 스피커로 출력
+        """
+        os.system(f"/usr/bin/aplay -D hw:0,0 {self.start_sound_file}")
 
     def stt(self):
         """
@@ -29,6 +36,8 @@ class WowAudioAssistant:
 
         audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+        self.start_sound_effect()
 
         speech_recognition_result = speech_recognizer.recognize_once_async().get()
 
@@ -113,6 +122,7 @@ if __name__ == '__main__':
     flag = False
 
     assistant = WowAudioAssistant(
+        start_sound_file='./sound_effect/start_sound.wav',
         openai_api_key=os.getenv('OPENAI_API_KEY'),
         azure_speech_key=os.getenv('SPEECH_KEY'),
         azure_service_region=os.getenv('SERVICE_REGION')
@@ -123,7 +133,7 @@ if __name__ == '__main__':
 
         if (button.is_pressed) and (flag is False): # 버튼이 눌리면 시작
             flag = True
-            time.sleep(5) # 5초 뒤 시작, 버튼 여러 번 눌림 방지
+            time.sleep(3) # 3초 뒤 시작, 버튼 여러 번 눌림 방지
 
             assistant.stt()
             assistant.gpt()
