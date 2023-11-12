@@ -44,6 +44,9 @@ def send_rfid_post_request(id, text):
 
 
 def rfid_rc522():
+    """
+    실시간으로 RFID 모듈에 ID 카드 접촉이 감지되는지 체크하는 함수
+    """
     reader = SimpleMFRC522()
 
     try:
