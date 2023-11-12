@@ -1,9 +1,12 @@
 azure-cognitiveservices-speech==1.32.1
 certifi==2023.7.22
 charset-normalizer==3.3.1
+colorzero==2.0
+gpiozero==2.0
 idna==3.4
 mfrc522==0.0.7
 openai==1.2.3
+pygame==2.5.2
 python-dotenv==1.0.0
 requests==2.31.0
 RPi.GPIO==0.7.1

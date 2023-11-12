@@ -1,5 +1,8 @@
 from dotenv import load_dotenv
 from openai import OpenAI
+from gpiozero import Button
+import pygame
+import time
 import azure.cognitiveservices.speech as speechsdk
 import logging
 import os
@@ -10,12 +13,20 @@ load_dotenv()
 
 
 class WowAudioAssistant:
-    def __init__(self, openai_api_key, azure_speech_key, azure_service_region):
+    def __init__(self, start_sound_file, openai_api_key, azure_speech_key, azure_service_region):
+        self.start_sound_file = start_sound_file
         self.azure_stt_result = ""
         self.openai_api_key = openai_api_key
         self.azure_speech_key = azure_speech_key
         self.azure_service_region = azure_service_region
         self.answer_text = ""
+
+    def start_sound_effect(self):
+        """
+        듣기 시작 효과음을 스피커로 출력
+        """
+        pygame.mixer.music.load(self.start_sound_file)
+        pygame.mixer.music.play()
 
     def stt(self):
         """
@@ -28,19 +39,20 @@ class WowAudioAssistant:
         audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
-        print("Speak into your microphone.")
+        self.start_sound_effect()
+
         speech_recognition_result = speech_recognizer.recognize_once_async().get()
 
         if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
-            print("Recognized: {}".format(speech_recognition_result.text))
+            logging.info("STT Recognized: {}".format(speech_recognition_result.text))
         elif speech_recognition_result.reason == speechsdk.ResultReason.NoMatch:
-            print("No speech could be recognized: {}".format(speech_recognition_result.no_match_details))
+            logging.error("STT No speech could be recognized: {}".format(speech_recognition_result.no_match_details))
         elif speech_recognition_result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = speech_recognition_result.cancellation_details
-            print("Speech Recognition canceled: {}".format(cancellation_details.reason))
+            logging.error("Speech Recognition canceled: {}".format(cancellation_details.reason))
             if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                print("Error details: {}".format(cancellation_details.error_details))
-                print("Did you set the speech resource key and region values?")
+                logging.error("STT Error details: {}".format(cancellation_details.error_details))
+                logging.error("STT Did you set the speech resource key and region values?")
         
         self.azure_stt_result = speech_recognition_result.text
 
@@ -70,9 +82,7 @@ class WowAudioAssistant:
         filtered_content = re.sub(r"[^a-zA-Zㄱ-ㅎ가-힣0-9! .?]", "", raw_content)
 
         self.answer_text = filtered_content
-        
-        print(self.answer_text)
-        
+
         return self.answer_text
 
     def tts(self):
@@ -97,26 +107,40 @@ class WowAudioAssistant:
         result = speech_synthesizer.speak_text_async(text).get()
 
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            print("Speech synthesized for text [{}]".format(text))
+            logging.info("TTS Speech synthesized for text [{}]".format(text))
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
-            print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            logging.error("Speech synthesis canceled: {}".format(cancellation_details.reason))
             if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                print("Error details: {}".format(cancellation_details.error_details))
+                logging.error("TTS Error details: {}".format(cancellation_details.error_details))
 
 
 if __name__ == '__main__':
     log_file = 'communication.log'
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    # while - button 감지되면 시작 - sleep 20 sec
-    
+    pygame.init()
+
+    button = Button(16)
+
+    flag = False
+
     assistant = WowAudioAssistant(
+        start_sound_file='./sound_effect/start_sound.mp3',
         openai_api_key=os.getenv('OPENAI_API_KEY'),
         azure_speech_key=os.getenv('SPEECH_KEY'),
         azure_service_region=os.getenv('SERVICE_REGION')
     )
 
-    assistant.stt()
-    assistant.gpt()
-    assistant.tts()    
+    while True:
+        button.wait_for_press()
+
+        if (button.is_pressed) and (flag is False): # 버튼이 눌리면 시작
+            flag = True
+            time.sleep(5) # 5초 뒤 시작, 버튼 여러 번 눌림 방지
+
+            assistant.stt()
+            assistant.gpt()
+            assistant.tts()
+
+            flag = False
