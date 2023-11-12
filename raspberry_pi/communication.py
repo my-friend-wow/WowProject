@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from openai import OpenAI
 from gpiozero import Button
-import pygame
 import time
 import azure.cognitiveservices.speech as speechsdk
 import logging
@@ -13,20 +12,12 @@ load_dotenv()
 
 
 class WowAudioAssistant:
-    def __init__(self, start_sound_file, openai_api_key, azure_speech_key, azure_service_region):
-        self.start_sound_file = start_sound_file
+    def __init__(self, openai_api_key, azure_speech_key, azure_service_region):
         self.azure_stt_result = ""
         self.openai_api_key = openai_api_key
         self.azure_speech_key = azure_speech_key
         self.azure_service_region = azure_service_region
         self.answer_text = ""
-
-    def start_sound_effect(self):
-        """
-        듣기 시작 효과음을 스피커로 출력
-        """
-        pygame.mixer.music.load(self.start_sound_file)
-        pygame.mixer.music.play()
 
     def stt(self):
         """
@@ -38,8 +29,6 @@ class WowAudioAssistant:
 
         audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
-
-        self.start_sound_effect()
 
         speech_recognition_result = speech_recognizer.recognize_once_async().get()
 
@@ -119,14 +108,11 @@ if __name__ == '__main__':
     log_file = 'communication.log'
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    pygame.init()
-
     button = Button(16)
 
     flag = False
 
     assistant = WowAudioAssistant(
-        start_sound_file='./sound_effect/start_sound.mp3',
         openai_api_key=os.getenv('OPENAI_API_KEY'),
         azure_speech_key=os.getenv('SPEECH_KEY'),
         azure_service_region=os.getenv('SERVICE_REGION')

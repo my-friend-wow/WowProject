@@ -24,3 +24,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable pedometer rfid communication
 sudo systemctl start pedometer rfid communication
 ```
+
+> **Warning**
+> Raspberry Pi may not find speaker and microphone, so please refer [here](https://askubuntu.com/questions/150851/how-do-i-select-a-default-sound-card-with-alsa) and set it up.
