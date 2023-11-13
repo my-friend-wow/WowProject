@@ -44,20 +44,17 @@ def send_pedometer_post_request():
 def sw18010p():
     """
     실시간으로 진동이 감지되는지 체크하는 함수
+    SW18010P 모듈은 기본값이 `GPIO.HIGH`이고,
+    충격이 감지될 때 `GPIO.LOW`로 바뀜
     """
     GPIO.setmode(GPIO.BCM)
-
     SENSOR_PIN = 17
-
     GPIO.setup(SENSOR_PIN, GPIO.IN)
 
     try:
         while True:
-            sensor_value = GPIO.input(SENSOR_PIN)
-            
-            if sensor_value == GPIO.HIGH: #진동 감지됨
+            if GPIO.input(SENSOR_PIN) == GPIO.LOW:
                 send_pedometer_post_request()
-
             time.sleep(1)
     
     finally:
