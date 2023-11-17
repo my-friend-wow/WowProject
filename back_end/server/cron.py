@@ -56,7 +56,39 @@ def reset_friend_list_per_day():
             raise e
 
 
+def check_level_up():
+    """
+    매일 00시 cronjob 실행되는 함수
+    유저의 코인 개수를 확인해 레벨(0~4)을 변경
+    """
+    with app.app_context():
+        all_user_data = User.query.all()
+        has_changes = False
+
+        for user_data in all_user_data:
+            if user_data.coin_count == 60:
+                user_data.character_level = 4
+                has_changes = True
+            elif user_data.coin_count == 40:
+                user_data.character_level = 3
+                has_changes = True
+            elif user_data.coin_count == 20:
+                user_data.character_level = 2
+                has_changes = True
+            elif user_data.coin_count == 10:
+                user_data.character_level = 1
+                has_changes = True
+
+        if has_changes:
+            try:
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                raise e
+
+
 if __name__ == '__main__':
     reset_step_count_per_day()
     reset_activity_per_day()
     reset_friend_list_per_day()
+    check_level_up()
