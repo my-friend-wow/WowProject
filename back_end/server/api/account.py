@@ -6,6 +6,7 @@ from plugin.account_check import is_id_valid_input, is_pw_valid_input, generate_
 from models.user import User
 from models.doll import Doll
 from models.user_daily_activity import UserDailyActivity
+from models.serial_number import SerialNumber
 
 
 @app.route('/signup', methods=['POST'])
@@ -25,6 +26,11 @@ def sign_up():
     existing_doll = Doll.query.filter_by(user_id=user_id).first() 
 
     existing_doll_id = Doll.query.filter_by(doll_id=doll_id).first()
+
+    all_serial_numbers = SerialNumber.query.all()
+
+    if doll_id not in all_serial_numbers:
+        return jsonify(message='존재하지 않는 인형 시리얼넘버입니다. 문제가 계속된다면 관리자에게 문의하세요.'), 404
 
     if existing_user or existing_doll:
         return jsonify(message='이미 회원가입한 적이 있는 아이디입니다. 로그인하세요.'), 400

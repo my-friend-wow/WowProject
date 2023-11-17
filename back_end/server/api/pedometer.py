@@ -66,7 +66,7 @@ def pedometer_get(user_id):
 def pedometer_coin_exchange():
     """
     걸음 수 <-> 코인 교환 API
-    user_id를 해당 유저가 5000걸음 이상 걸었다면 코인 +=1 지급
+    user_id를 받고 해당 유저가 5000걸음 이상 걸었다면 코인 +=1 지급
     """
     token = request.headers.get('Authorization')
     payload = verify_token(token)
