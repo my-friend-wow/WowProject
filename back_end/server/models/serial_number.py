@@ -6,3 +6,4 @@ class SerialNumber(db.Model):
     __tablename__ = 'serial_numbers'
 
     doll_id = db.Column(db.String(255), unique=True, nullable=False, primary_key=True)
+    is_active = db.Column(db.Boolean, nullable=False, default=False)

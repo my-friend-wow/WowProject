@@ -27,10 +27,23 @@ def sign_up():
 
     existing_doll_id = Doll.query.filter_by(doll_id=doll_id).first()
 
-    all_serial_numbers = SerialNumber.query.all()
+    serial_number_data = SerialNumber.query.all()
+    serial_numbers_list = [serial_number.doll_id for serial_number in serial_number_data]
 
-    if doll_id not in all_serial_numbers:
+    if doll_id not in serial_numbers_list:
         return jsonify(message='존재하지 않는 인형 시리얼넘버입니다. 문제가 계속된다면 관리자에게 문의하세요.'), 404
+    else:
+        serial_number_data = SerialNumber.query.filter_by(doll_id=doll_id).first()
+        is_active = serial_number_data.is_active
+        if is_active:
+            return jsonify(message='이미 다른 사용자가 사용 중인 시리얼 넘버입니다. 다른 인형을 사용하세요.'), 422
+        else:
+            serial_number_data.is_active = 1
+            try:
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                return jsonify(message='시리얼 넘버 활성화 도중 오류가 발생했습니다. 다시 시도해주세요.'), 500
 
     if existing_user or existing_doll:
         return jsonify(message='이미 회원가입한 적이 있는 아이디입니다. 로그인하세요.'), 400
