@@ -41,7 +41,7 @@ def sign_up():
             serial_number_data.is_active = 1
             try:
                 db.session.commit()
-            except SQLAlchemyError as e:
+            except SQLAlchemyError:
                 db.session.rollback()
                 return jsonify(message='시리얼 넘버 활성화 도중 오류가 발생했습니다. 다시 시도해주세요.'), 500
 
