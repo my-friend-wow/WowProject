@@ -21,4 +21,4 @@
 |Hardware|<img src="https://img.shields.io/badge/Raspberry Pi-C7053D?style=for-the-badge&logo=raspberrypi&logoColor=white"/>|
 
 ## ERD
-![industry](https://github.com/my-friend-wow/WowProject/assets/74031620/b7aad147-4b92-4e50-beb8-0dfaf634348b)
+업로드 예정
