@@ -66,7 +66,7 @@ def pedometer_get(user_id):
 def pedometer_coin_exchange():
     """
     걸음 수 <-> 코인 교환 API
-    user_id, coin_amount를 받아 해당 유저의 코인 개수 증가
+    user_id를 받고 해당 유저가 5000걸음 이상 걸었다면 코인 +=1 지급
     """
     token = request.headers.get('Authorization')
     payload = verify_token(token)
@@ -75,7 +75,6 @@ def pedometer_coin_exchange():
 
     data = request.get_json()
     user_id = data.get('user_id')
-    coin_amount = data.get('coin_amount')
 
     user_activity_data = UserDailyActivity.query.filter_by(user_id=user_id).first()
     
@@ -83,14 +82,16 @@ def pedometer_coin_exchange():
         return jsonify(message='이미 오늘 코인을 교환하셨습니다.'), 422
 
     user_data = User.query.filter_by(user_id=user_id).first()
-    user_data.coin_count += coin_amount
 
-    user_activity_data.today_walked = 1
+    if user_data.step_count >= 5000:
+        user_data.coin_count += 1
+        user_activity_data.today_walked = 1
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            return jsonify(message='유저에게 코인 지급 도중 에러가 발생했습니다.'), 500
+    else:
+        return jsonify(message='아직 5000 걸음 이상 걷지 않았어요. 힘내요!'), 422
 
-    try:
-        db.session.commit()
-    except SQLAlchemyError:
-        db.session.rollback()
-        return jsonify(message='유저에게 코인 지급 도중 에러가 발생했습니다.'), 500
-
-    return jsonify(message="코인 지급이 완료됐습니다."), 200
+    return jsonify(message="코인 1개 지급이 완료됐습니다."), 200
