@@ -1,9 +1,9 @@
 ## Usage
 
-> **Note**
+> [!Note]
 > Make sure to create `.env` file inside the `/raspberry_pi` directory based on `.env.example`.
 
-> **Note**
+> [!Note]
 > SW-18010P uses GPIO 17. The tact switch uses GPIO 16. And The reference for RFID RC522 is [here](https://www.youtube.com/watch?v=evRuZRxvPFI).
 
 - Install Virtual Environment & Requirements
@@ -25,5 +25,5 @@ sudo systemctl enable pedometer rfid communication
 sudo systemctl start pedometer rfid communication
 ```
 
-> **Warning**
+> [!Important]
 > Raspberry Pi may not find speaker and microphone, so please refer [here](https://askubuntu.com/questions/150851/how-do-i-select-a-default-sound-card-with-alsa) and set it up.

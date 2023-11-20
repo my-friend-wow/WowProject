@@ -1,6 +1,6 @@
 ## Usage
 
-> **Note**
+> [!Note]
 > Make sure to create `.env` file inside the `/back_end/server` directory based on `.env.example`.
 
 ```bash
