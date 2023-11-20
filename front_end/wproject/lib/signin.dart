@@ -46,13 +46,13 @@ class _SignInPageState extends State<SignInPage> {
             return AlertDialog(
               content: Text(message),
               actions: [
-                TextButton(
+                ElevatedButton(
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
+                      MaterialPageRoute(builder: (context) => MainPage(userId: userIdController.text, token: token)),
                     );
                   },
                 ),
@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
             return AlertDialog(
               content: Text(message),
               actions: [
-                TextButton(
+                ElevatedButton(
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
