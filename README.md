@@ -1,7 +1,7 @@
 # WowProject
 
 ## Project Duration
-2023.09.01~
+2023.09.01~2023.11.30
 
 ## Members of Team 9
 |한상현|정희원|박덕열|기여스|
@@ -21,4 +21,4 @@
 |Hardware|<img src="https://img.shields.io/badge/Raspberry Pi-C7053D?style=for-the-badge&logo=raspberrypi&logoColor=white"/>|
 
 ## ERD
-![industry](https://github.com/my-friend-wow/WowProject/assets/74031620/b7aad147-4b92-4e50-beb8-0dfaf634348b)
+![Erd](https://github.com/my-friend-wow/WowProject/assets/74031620/cb8a3399-4a11-400a-8311-6f0947cc2baf)
