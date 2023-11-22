@@ -23,7 +23,7 @@ class _PedometerPageState extends State<PedometerPage> {
       'Authorization': '$token',
       'Content-Type': 'application/json',
     };
-    print('서버 요청, 헤더에 포함된 토큰: $token');
+
     try {
       final response = await http.get(
         Uri.parse('$apiUrl/pedometer_get/$userId'),
@@ -193,7 +193,7 @@ class _PedometerPageState extends State<PedometerPage> {
                 onPressed: () {
                   _pedometer(widget.userId, widget.token);
                 },
-                child: Text('산책 시작')
+                child: Text('현재 걸음수 보기')
             ),
             ElevatedButton(
                 onPressed: () {
