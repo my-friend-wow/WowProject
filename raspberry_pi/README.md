@@ -17,6 +17,8 @@
 - System Service Setting
   - English
     ```bash
+    sudo cp pedometer.service /etc/systemd/system/pedometer.service &&
+    sudo cp rfid.service /etc/systemd/system/rfid.service &&
     sudo cp communication_eng.service /etc/systemd/system/communication_eng.service &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable pedometer rfid communication_eng &&
@@ -25,6 +27,8 @@
 
   - Korean
     ```bash
+    sudo cp pedometer.service /etc/systemd/system/pedometer.service &&
+    sudo cp rfid.service /etc/systemd/system/rfid.service &&
     sudo cp communication_kor.service /etc/systemd/system/communication_kor.service &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable pedometer rfid communication_kor &&

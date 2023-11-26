@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from gpiozero import Button
 import time
+import requests
 import azure.cognitiveservices.speech as speechsdk
 import logging
 import os
@@ -56,6 +57,28 @@ class WowEngAudioAssistant:
 
         return self.azure_stt_result
 
+    def moderation(self):  # moderation이 True가 반환되면 비속어 사용한 것
+        url = 'https://api.openai.com/v1/moderations'
+        input = self.azure_stt_result
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + self.openai_api_key
+        }
+
+        data = {
+            "input": input
+        }
+
+        response = requests.post(url, json=data, headers=headers)
+
+        if response.status_code == 200:
+            json_data = response.json()
+            output = json_data['results'][0]['flagged']
+        else:
+            output = False
+
+        return output
+
     def gpt(self):
         """
         OpenAI API를 이용해 답변 텍스트 생성
@@ -64,26 +87,31 @@ class WowEngAudioAssistant:
             self.answer_text = "An error has occurred. If the issue persists, please contact the administrator."
             logging.error("GPT API 실행 전 STT Result가 비어있습니다.")
             return self.answer_text
+
+        is_negative = self.moderation()
         
-        content_text = self.azure_stt_result
-        client = OpenAI(api_key=self.openai_api_key)
+        if is_negative:
+            self.answer_text = "Let's share positive words with each other."
+        else:
+            content_text = self.azure_stt_result
+            client = OpenAI(api_key=self.openai_api_key)
 
-        system_content = 'The one conversing with you is an elementary school student. Speak in English.'
+            system_content = 'The one conversing with you is an elementary school student. Speak in English.'
 
-        response_chat = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": system_content},
-                {"role": "user", "content": content_text},
-            ]
-        )
+            response_chat = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": system_content},
+                    {"role": "user", "content": content_text},
+                ]
+            )
 
-        raw_content = response_chat.choices[0].message.content
-        filtered_content = re.sub(r"[^a-zA-Z0-9! .?]", "", raw_content)
+            raw_content = response_chat.choices[0].message.content
+            filtered_content = re.sub(r"[^a-zA-Z0-9!' .?]", "", raw_content)
 
-        self.answer_text = filtered_content
+            self.answer_text = filtered_content
 
-        return self.answer_text
+            return self.answer_text
 
     def tts(self):
         """
@@ -94,7 +122,7 @@ class WowEngAudioAssistant:
 
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
 
-        speech_config.speech_synthesis_voice_name = "en-US-Ana"
+        speech_config.speech_synthesis_voice_name = "en-US-AnaNeural"
 
         if self.answer_text == "":
             text = "An error has occurred. If the issue persists, please contact the administrator."
