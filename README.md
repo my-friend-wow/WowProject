@@ -18,7 +18,7 @@
 |:--:|:--|
 |Front-end|<img src="https://img.shields.io/badge/Flutter-FAFAFA?style=for-the-badge&logo=flutter&logoColor=013ADF"/>|
 |Back-end|<img src="https://img.shields.io/badge/Flask-black?style=for-the-badge&logo=flask&logoColor=white"/> <img src="https://img.shields.io/badge/Gunicorn-E6E6E6?style=for-the-badge&logo=gunicorn&logoColor=298A08"/> <img src="https://img.shields.io/badge/Docker-E6E6E6?style=for-the-badge&logo=docker&logoColor=2496ED"/> <img src="https://img.shields.io/badge/Nginx-21610B?style=for-the-badge&logo=Nginx&logoColor=white"/> <img src="https://img.shields.io/badge/Azure SQL DB (MSSQL)-017CEE?style=for-the-badge&logo=microsoft&logoColor=white"/>|
-|Hardware|<img src="https://img.shields.io/badge/Raspberry Pi-C7053D?style=for-the-badge&logo=raspberrypi&logoColor=white"/>|
+|Hardware|<img src="https://img.shields.io/badge/Raspberry Pi-C7053D?style=for-the-badge&logo=raspberrypi&logoColor=white"/> <img src="https://img.shields.io/badge/OpenAI-E6E6E6?style=for-the-badge&logo=OpenAI&logoColor=black">|
 
 ## ERD
 ![Erd](https://github.com/my-friend-wow/WowProject/assets/74031620/cb8a3399-4a11-400a-8311-6f0947cc2baf)
