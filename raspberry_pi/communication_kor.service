@@ -1,0 +1,14 @@
+[Unit]
+Description=Raspberry Pi Korean Communication Service
+After=network.target
+
+[Service]
+User=industry
+Group=industry
+WorkingDirectory=/home/industry/WowProject/raspberry_pi/
+Environment="PYTHONPATH=/home/industry/myenv/bin/python3"
+Environment="PATH=/home/industry/myenv/bin"
+ExecStart=/home/industry/myenv/bin/python /home/industry/WowProject/raspberry_pi/communication_kor.py
+
+[Install]
+WantedBy=multi-user.target

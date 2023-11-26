@@ -11,7 +11,7 @@ import re
 load_dotenv()
 
 
-class WowAudioAssistant:
+class WowKorAudioAssistant:
     def __init__(self, start_sound_file, openai_api_key, azure_speech_key, azure_service_region):
         self.start_sound_file = start_sound_file
         self.azure_stt_result = ""
@@ -114,14 +114,14 @@ class WowAudioAssistant:
 
 
 if __name__ == '__main__':
-    log_file = 'communication.log'
+    log_file = 'kor_communication.log'
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     button = Button(16)
 
     flag = False
 
-    assistant = WowAudioAssistant(
+    assistant = WowKorAudioAssistant(
         start_sound_file='./sound_effect/start_sound.wav',
         openai_api_key=os.getenv('OPENAI_API_KEY'),
         azure_speech_key=os.getenv('SPEECH_KEY'),
