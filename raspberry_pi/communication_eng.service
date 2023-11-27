@@ -8,7 +8,7 @@ Group=industry
 WorkingDirectory=/home/industry/WowProject/raspberry_pi/
 Environment="PYTHONPATH=/home/industry/myenv/bin/python3"
 Environment="PATH=/home/industry/myenv/bin"
-ExecStart=/home/industry/myenv/bin/python /home/industry/WowProject/raspberry_pi/communication_eng.py
+ExecStart=/home/industry/myenv/bin/python /home/industry/WowProject/raspberry_pi/communication.py ENG
 
 [Install]
 WantedBy=multi-user.target
