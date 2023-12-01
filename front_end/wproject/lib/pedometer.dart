@@ -38,24 +38,31 @@ class _PedometerPageState extends State<PedometerPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Text('걸음수: $stepCount'),
+                content: Text('$stepCount 걸음을 걸었어요', style: TextStyle(fontSize: 20, color: Colors.black), textAlign: TextAlign.center),
                 actions: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('확인'),
-                  ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        await _exchangeStepsForCoin(userId, token);
-                      },
-                      child: Text('코인 받기'),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(fixedSize: Size(120, 20), primary: Colors.orange),
+                        onPressed: () async {
+                          await _exchangeStepsForCoin(userId, token);
+                        },
+                        child: Text('코인 받기', style: TextStyle(fontSize: 20, color: Colors.white)),
+                      ),
+                      SizedBox(width: 60),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          },
+                        child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
+                      ),
+                    ],
                   ),
                 ],
               );
             }
-            );
+        );
       }
 
       else if (response.statusCode == 404 || response.statusCode == 401) {
@@ -66,10 +73,11 @@ class _PedometerPageState extends State<PedometerPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black)),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -86,10 +94,11 @@ class _PedometerPageState extends State<PedometerPage> {
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            content: Text('서버와의 연결에 문제가 발생했습니다.'),
+            content: Text('서버와의 연결에 문제가 발생했습니다.', style: TextStyle(fontSize: 20, color: Colors.black)),
             actions: [
               ElevatedButton(
-                child: Text('확인'),
+                style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -127,10 +136,11 @@ class _PedometerPageState extends State<PedometerPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black)),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -149,10 +159,11 @@ class _PedometerPageState extends State<PedometerPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 15, color: Colors.black)),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -168,10 +179,11 @@ class _PedometerPageState extends State<PedometerPage> {
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            content: Text('서버와의 연결에 문제가 발생했습니다.'),
+            content: Text('서버와의 연결에 문제가 발생했습니다.', style: TextStyle(fontSize: 20, color: Colors.black)),
             actions: [
               ElevatedButton(
-                child: Text('확인'),
+                style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                child: Text('확인', style: TextStyle(fontSize: 20, color: Colors.white)),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -184,22 +196,39 @@ class _PedometerPageState extends State<PedometerPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(),
-        body: Row(
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/background_pedometer.png'),
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Text('산 책', style: TextStyle(color: Colors.black)),
+          centerTitle: true,
+        ),
+        body: Column(
           children: [
+            Text('오늘 얼마나 걸었는지 확인해보세요!', style: TextStyle(fontSize: 20, color: Colors.black)),
+            Image.asset('assets/pedometer.png', width: 500, height: 500,),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(fixedSize: Size(300, 50), primary: Colors.orange),
                 onPressed: () {
                   _pedometer(widget.userId, widget.token);
-                },
-                child: Text('현재 걸음수 보기')
+                  },
+                child: Text('걸음수 보기', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
+            SizedBox(height: 30),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(fixedSize: Size(300, 50), primary: Colors.orange),
                 onPressed: () {
                   Navigator.pop(context);
                   },
-                child: Text('뒤로')
+                child: Text('뒤로 가기', style: TextStyle(fontSize: 20, color: Colors.white))
             )
           ],
         ),

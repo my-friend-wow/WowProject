@@ -44,10 +44,11 @@ class _SignInPageState extends State<SignInPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black),),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.push(
@@ -70,10 +71,11 @@ class _SignInPageState extends State<SignInPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black),),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -90,10 +92,11 @@ class _SignInPageState extends State<SignInPage> {
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            content: Text('서버와의 연결에 문제가 발생했습니다.'),
+            content: Text('서버와의 연결에 문제가 발생했습니다.', style: TextStyle(fontSize: 20, color: Colors.black),),
             actions:[
               ElevatedButton(
-                child: Text('확인'),
+                style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -109,32 +112,49 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return MaterialApp( // 디자인
       home: Scaffold(
-        appBar: AppBar(),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Text('로그인', style: TextStyle(color: Colors.black)),
+          centerTitle: true,
+        ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: userIdController,
               decoration: InputDecoration(labelText:'아이디'),
             ),
+            SizedBox(height: 30),
             TextField(
               controller: userPwController,
               obscureText: true,
               decoration: InputDecoration(labelText:'비밀번호'),
             ),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 60),
                 ElevatedButton(
-                  onPressed: _signIn,
-                  child: Text('로그인'),
+                    onPressed: _signIn,
+                    child: Text('로그인', style: TextStyle(fontSize: 20,
+                        color: Colors.white),),
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(300, 50), primary: Colors.orange)
                 ),
+                SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUpPage()),
-                    );
-                  },
-                  child: Text('회원가입'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      );
+                    },
+                    child: Text('회원가입', style: TextStyle(fontSize: 20,
+                        color: Colors.white),),
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: Size(300, 50), primary: Colors.orange)
                 ),
               ],
             ),
@@ -186,10 +206,11 @@ class _SignUpPageState extends State<SignUpPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black),),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.push(
@@ -213,10 +234,11 @@ class _SignUpPageState extends State<SignUpPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text(message),
+              content: Text(message, style: TextStyle(fontSize: 20, color: Colors.black),),
               actions: [
                 ElevatedButton(
-                  child: Text('확인'),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                  child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -233,10 +255,11 @@ class _SignUpPageState extends State<SignUpPage> {
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            content: Text('서버와의 연결에 문제가 발생했습니다.'),
+            content: Text('서버와의 연결에 문제가 발생했습니다.', style: TextStyle(fontSize: 20, color: Colors.black),),
             actions: [
               ElevatedButton(
-                child: Text('확인'),
+                style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
+                child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -250,45 +273,66 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
+    return Scaffold (
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: Text('회원가입', style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: userIdController,
+            decoration: InputDecoration(labelText: '아이디'),
+          ),
+          SizedBox(height: 30),
+          TextField(
+            controller: userPwController,
+            obscureText: true,
+            decoration: InputDecoration(labelText: '비밀번호'),
+          ),
+          SizedBox(height: 30),
+          TextField(
+            controller: dollNameController,
+            decoration: InputDecoration(labelText: '인형이름'),
+          ),
+          SizedBox(height: 30),
+          TextField(
+            controller: dollIdController,
+            decoration: InputDecoration(labelText: '인형아이디(시리얼넘버)'),
+          ),
 
-        ),
-        body: Column(
-          children: [
-            TextField(
-              controller: userIdController,
-              decoration: InputDecoration(labelText: '아이디'),
-            ),
-            TextField(
-              controller: userPwController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: '비밀번호'),
-            ),
-            TextField(
-              controller: dollNameController,
-              decoration: InputDecoration(labelText: '인형이름'),
-            ),
-            TextField(
-              controller: dollIdController,
-              decoration: InputDecoration(labelText: '인형아이디'),
-            ),
-            Row(
-              children: [
-                ElevatedButton(onPressed: () {
-                  Navigator.pop(context);
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 60),
+              ElevatedButton(
+                  onPressed: _signUp,
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(300, 50),
+                    primary: Colors.orange,
+                  ),
+                  child: Text('회원 가입', style: TextStyle(fontSize: 20,
+                      color: Colors.white),)
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(onPressed: () {
+                Navigator.pop(context);
                 },
-                    child: Text('뒤로')
-                ),
-                ElevatedButton(
-                    onPressed: _signUp,
-                    child: Text('회원가입')
-                ),
-              ],
-            )
-          ],
-        ),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(300, 50),
+                    primary: Colors.orange,
+                  ),
+                  child: Text('뒤로 가기', style: TextStyle(fontSize: 20,
+                      color: Colors.white),)
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
