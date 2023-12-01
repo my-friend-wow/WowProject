@@ -51,8 +51,10 @@ class _MainPageState extends State<MainPage> {
         body: SafeArea(
             child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 90),
+                    Image.asset('assets/myfriendwow.png', width: 300, height: 150),
+                    SizedBox(height: 30),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(fixedSize: Size(300, 50), primary: Colors.orange),
                         onPressed: () {
