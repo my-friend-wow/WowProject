@@ -11,8 +11,10 @@ A therapeutic functional mobile game that provides children with psychological c
 
 ## Results of This Project
 ### Video
+You can watch the video [here](https://www.youtube.com/watch?v=Ax7i82ASFk4).
 
 ### Image
+![Application Results](https://github.com/my-friend-wow/WowProject/assets/74031620/999e0c98-18ec-4e2c-8594-eae94d98226d)
 
 ## Project Architecture
 ![Architecture](https://github.com/my-friend-wow/WowProject/assets/74031620/7b3be650-5f5b-437a-917b-ada201d120a5)
