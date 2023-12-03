@@ -200,7 +200,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (response.statusCode == 201) { //회원가입 성공
         final data = json.decode(response.body);
-        final message = data['mesage'];
+        final message = data['message'];
 
         showDialog(
           context: context,
@@ -212,7 +212,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: ElevatedButton.styleFrom(fixedSize: Size(80, 20), primary: Colors.orange),
                   child: Text('확인', style: TextStyle(fontSize: 15, color: Colors.white),),
                   onPressed: () {
-                    Navigator.of(context).pop();
                     Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SignInPage())
