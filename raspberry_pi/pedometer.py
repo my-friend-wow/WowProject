@@ -55,7 +55,7 @@ def sw18010p():
         while True:
             if GPIO.input(SENSOR_PIN) == GPIO.LOW:
                 send_pedometer_post_request()
-            time.sleep(1)
+            time.sleep(0.04)
     
     finally:
         GPIO.cleanup()

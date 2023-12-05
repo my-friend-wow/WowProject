@@ -52,7 +52,7 @@ def rfid_rc522():
     try:
         while True:
             id, text = reader.read()
-            send_rfid_post_request(id, text)
+            send_rfid_post_request(str(id), text)
 
             time.sleep(10)
     finally:
